@@ -52,3 +52,81 @@ you will got this
   "id": 1
 }
 ```
+# 3.tag "0.0.2"
+before query, we need to add some data
+visit:
+http://localhost:1337/user/create?name=vb.net&birthyear=2002
+http://localhost:1337/user/create?name=vb8&birthyear=2008
+http://localhost:1337/user/create?name=vbs&birthyear=1998
+
+now that we have enough data, we can do some test now
+
+test is performed using [Postman](https://github.com/postmanlabs/postman-chrome-interceptor)
+
+Set postman:
+url:http://localhost:1337/user/find
+method:POST
+raw:JSON
+```javascript
+{
+  "name": {
+    "like": "%s%"
+  }
+}
+```
+then send the request,we shell get
+```javascript
+[
+    {
+        "name": "vbs",
+        "birthyear": "1998",
+        "createdAt": "2016-06-05T10:45:23.348Z",
+        "updatedAt": "2016-06-05T10:45:23.348Z",
+        "id": 4
+    }
+]
+```
+as you can see,`vbs` is the only name wish the word `s`
+
+if we change the request to something like this
+```js
+{
+  "name": {
+    "like": "%vb%"
+  }
+}
+```
+we are certain to get
+```js
+[
+    {
+        "name": "vb6",
+        "birthyear": "1998",
+        "createdAt": "2016-06-05T10:34:12.281Z",
+        "updatedAt": "2016-06-05T10:34:12.281Z",
+        "id": 1
+    },
+    {
+        "name": "vb.net",
+        "birthyear": "2002",
+        "createdAt": "2016-06-05T10:44:46.743Z",
+        "updatedAt": "2016-06-05T10:44:46.743Z",
+        "id": 2
+    },
+    {
+        "name": "vb8",
+        "birthyear": "2008",
+        "createdAt": "2016-06-05T10:44:56.748Z",
+        "updatedAt": "2016-06-05T10:44:56.748Z",
+        "id": 3
+    },
+    {
+        "name": "vbs",
+        "birthyear": "1998",
+        "createdAt": "2016-06-05T10:45:23.348Z",
+        "updatedAt": "2016-06-05T10:45:23.348Z",
+        "id": 4
+    }
+]
+```
+as the response
